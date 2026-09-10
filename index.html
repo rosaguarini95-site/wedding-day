@@ -52,34 +52,34 @@
     </section>
   </main>
 
-  <script>
-    function aggiornaAltezzaPagina() {
-      const altezza = window.visualViewport
-        ? window.visualViewport.height
-        : window.innerHeight;
+<script>
+  function aggiornaAltezzaPagina() {
+    const altezza = window.visualViewport
+      ? window.visualViewport.height
+      : window.innerHeight;
 
-      document.documentElement.style.setProperty(
-        '--app-height',
-        `${altezza}px`
-      );
-    }
+    document.documentElement.style.setProperty(
+      '--app-height',
+      `${altezza}px`
+    );
+  }
 
-    aggiornaAltezzaPagina();
+  aggiornaAltezzaPagina();
 
-    window.addEventListener('load', aggiornaAltezzaPagina);
+  window.addEventListener('load', aggiornaAltezzaPagina);
 
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener(
-        'resize',
-        aggiornaAltezzaPagina
-      );
-    }
-
-    window.addEventListener(
-      'orientationchange',
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener(
+      'resize',
       aggiornaAltezzaPagina
     );
-  </script>
+  }
+
+  window.addEventListener(
+    'orientationchange',
+    aggiornaAltezzaPagina
+  );
+</script>
 
 </body>
 </html>
