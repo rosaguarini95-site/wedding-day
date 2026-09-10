@@ -52,5 +52,34 @@
     </section>
   </main>
 
+  <script>
+    function aggiornaAltezzaPagina() {
+      const altezza = window.visualViewport
+        ? window.visualViewport.height
+        : window.innerHeight;
+
+      document.documentElement.style.setProperty(
+        '--app-height',
+        `${altezza}px`
+      );
+    }
+
+    aggiornaAltezzaPagina();
+
+    window.addEventListener('load', aggiornaAltezzaPagina);
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener(
+        'resize',
+        aggiornaAltezzaPagina
+      );
+    }
+
+    window.addEventListener(
+      'orientationchange',
+      aggiornaAltezzaPagina
+    );
+  </script>
+
 </body>
 </html>
