@@ -133,7 +133,7 @@ img {
 .door-image {
   position: absolute;
   inset: 0;
-  background-image: url("assets/chiesa.png");
+  background-image: url("assets/chiesa.png?v=12");
   background-repeat: no-repeat;
 
   /* Ogni anta mostra esattamente metà dell'immagine */
