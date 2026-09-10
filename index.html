@@ -1,57 +1,96 @@
 <!DOCTYPE html>
 <html lang="it">
-<head> 
-  <meta charset="UTF-8" /> 
+<head>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="preload" as="image" href="assets/chiesa.png?v=13" fetchpriority="high" />
-  <link rel="preload" as="image" href="assets/invito.png?v=13" />
 
+  <!-- Precaricamento immagini principali -->
+  <link
+    rel="preload"
+    as="image"
+    href="assets/chiesa.png?v=13"
+    fetchpriority="high"
+  />
+
+  <link
+    rel="preload"
+    as="image"
+    href="assets/invito.png?v=13"
+  />
+
+  <!--
+    Al primo accesso effettuiamo un solo refresh automatico.
+    Il primo frame viene nascosto per evitare di mostrare
+    il layout non ancora assestato.
+  -->
   <script>
     (function () {
       document.documentElement.classList.add("is-loading");
-      const reloadKey = "wedding-first-reload-v3";
 
-      if (!sessionStorage.getItem(reloadKey)) {
+      const reloadKey = "wedding-first-reload-v4";
 
+      try {
+        if (!sessionStorage.getItem(reloadKey)) {
+          document.documentElement.style.visibility = "hidden";
+
+          sessionStorage.setItem(reloadKey, "1");
+
+          window.location.reload();
+        }
+      } catch (error) {
         /*
-          Nascondiamo il primissimo frame, così l'utente
-          non vede per un istante la chiesa fuori posizione.
+          Se sessionStorage non fosse disponibile,
+          continuiamo normalmente senza bloccare il sito.
         */
-        document.documentElement.style.visibility = "hidden";
-
-        /*
-          Segniamo che il refresh è già stato richiesto,
-          prima di eseguirlo, per evitare loop.
-        */
-        sessionStorage.setItem(reloadKey, "1");
-
-        /*
-          Un solo refresh automatico.
-        */
-        window.location.reload();
       }
     })();
   </script>
 
-  <meta name="theme-color" content="#f7f3ed" /> 
-  <title>Salvatore e Rosa</title> 
+  <meta name="theme-color" content="#f7f3ed" />
+
+  <title>Salvatore e Rosa</title>
+
   <link rel="stylesheet" href="style.css?v=13" />
 </head>
 
 <body>
 
-  <div class="site-loader" aria-label="Caricamento invito">
-  <div class="loader-content">
-    <div class="loader-monogram">SR</div>
-    <div class="loader-line"></div>
-    <div class="loader-text">Salvatore & Rosa</div>
-  </div>
+  <!-- =========================
+       LOADER
+       ========================= -->
+  <div
+    class="site-loader"
+    aria-label="Caricamento invito"
+    aria-live="polite"
+  >
+    <div class="loader-content">
+
+      <div class="loader-monogram">
+        SR
+      </div>
+
+      <div class="loader-line"></div>
+
+      <div class="loader-text">
+        Salvatore & Rosa
+      </div>
+
+    </div>
   </div>
 
+
+  <!-- =========================
+       INVITO
+       ========================= -->
   <main class="page">
-    <section class="wedding-card" aria-label="Invito di matrimonio di Salvatore e Rosa">
 
-      <!-- Checkbox invisibile: permette l'apertura senza JavaScript -->
+    <section
+      class="wedding-card"
+      aria-label="Invito di matrimonio di Salvatore e Rosa"
+    >
+
+      <!-- Checkbox invisibile:
+           permette apertura/chiusura senza JavaScript -->
       <input
         class="open-toggle"
         type="checkbox"
@@ -60,35 +99,215 @@
       />
 
       <div class="scene">
+
         <!-- Invito interno -->
         <div class="inside">
+
           <img
             src="assets/invito.png?v=13"
             alt="Invito al matrimonio di Salvatore e Rosa"
             draggable="false"
           />
+
         </div>
 
-        <!-- Due metà della facciata che si aprono come un biglietto -->
-        <label class="door door-left" for="open-card" aria-hidden="true">
+
+        <!-- Anta sinistra -->
+        <label
+          class="door door-left"
+          for="open-card"
+          aria-hidden="true"
+        >
           <span class="door-image"></span>
         </label>
 
-        <label class="door door-right" for="open-card" aria-hidden="true">
+
+        <!-- Anta destra -->
+        <label
+          class="door door-right"
+          for="open-card"
+          aria-hidden="true"
+        >
           <span class="door-image"></span>
         </label>
+
 
         <!-- Indicazione iniziale -->
-        <label class="open-hint" for="open-card">
-          <span class="open-hint__text">Tocca per aprire</span>
-          <span class="open-hint__arrow" aria-hidden="true">⌄</span>
+        <label
+          class="open-hint"
+          for="open-card"
+        >
+
+          <span class="open-hint__text">
+            Tocca per aprire
+          </span>
+
+          <span
+            class="open-hint__arrow"
+            aria-hidden="true"
+          >
+            ⌄
+          </span>
+
         </label>
 
-        <!-- Pulsante per richiudere -->
-        <label class="close-hint" for="open-card">Chiudi</label>
+
+        <!-- Pulsante chiusura -->
+        <label
+          class="close-hint"
+          for="open-card"
+        >
+          Chiudi
+        </label>
+
       </div>
 
     </section>
-  </main>  
+
+  </main>
+
+
+  <!-- =========================
+       CONTROLLO CARICAMENTO
+       ========================= -->
+  <script>
+    (function () {
+
+      const startTime = performance.now();
+
+      let sitoMostrato = false;
+
+
+      /*
+        Carichiamo esplicitamente entrambe le immagini.
+
+        In questo modo il sito non viene mostrato finché
+        sia la chiesa sia l'invito non sono pronti.
+      */
+      const immagini = [
+        "assets/chiesa.png?v=13",
+        "assets/invito.png?v=13"
+      ];
+
+
+      function caricaImmagine(src) {
+
+        return new Promise(function (resolve) {
+
+          const img = new Image();
+
+
+          img.onload = async function () {
+
+            /*
+              decode() aspetta che il browser abbia
+              effettivamente decodificato l'immagine,
+              non soltanto terminato il download.
+            */
+            try {
+
+              if (img.decode) {
+                await img.decode();
+              }
+
+            } catch (error) {
+              /*
+                Se decode() non è disponibile o fallisce,
+                l'immagine risulta comunque caricata.
+              */
+            }
+
+            resolve();
+          };
+
+
+          /*
+            Se una singola immagine dovesse avere problemi
+            non lasciamo il visitatore bloccato sul loader.
+          */
+          img.onerror = function () {
+            resolve();
+          };
+
+
+          img.src = src;
+
+        });
+
+      }
+
+
+      function mostraSito() {
+
+        if (sitoMostrato) {
+          return;
+        }
+
+        sitoMostrato = true;
+
+
+        /*
+          Se tutto è già in cache il caricamento può durare
+          pochi millisecondi.
+
+          Manteniamo il loader almeno 350 ms per evitare
+          un brutto lampeggio.
+        */
+        const tempoTrascorso =
+          performance.now() - startTime;
+
+        const attesa =
+          Math.max(0, 350 - tempoTrascorso);
+
+
+        setTimeout(function () {
+
+          /*
+            Ci assicuriamo di partire sempre
+            dall'inizio della pagina.
+          */
+          window.scrollTo(0, 0);
+
+
+          /*
+            Aspettiamo un frame prima di mostrare
+            il contenuto.
+          */
+          requestAnimationFrame(function () {
+
+            document.documentElement
+              .classList
+              .remove("is-loading");
+
+          });
+
+        }, attesa);
+
+      }
+
+
+      /*
+        Aspettiamo entrambe le immagini.
+      */
+      Promise
+        .all(
+          immagini.map(caricaImmagine)
+        )
+        .then(mostraSito);
+
+
+      /*
+        Sicurezza:
+        anche con una connessione molto problematica
+        il loader sparisce comunque dopo 6 secondi.
+      */
+      setTimeout(
+        mostraSito,
+        6000
+      );
+
+    })();
+  </script>
+
 </body>
 </html>
