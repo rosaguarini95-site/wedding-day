@@ -54,30 +54,73 @@
 
 <script>
   function aggiornaAltezzaPagina() {
-    const altezza = window.visualViewport
-      ? window.visualViewport.height
-      : window.innerHeight;
+
+    const visualHeight =
+      window.visualViewport
+        ? window.visualViewport.height
+        : 0;
+
+    const innerHeight = window.innerHeight || 0;
+
+    const clientHeight =
+      document.documentElement.clientHeight || 0;
+
+    const altezza = Math.max(
+      visualHeight,
+      innerHeight,
+      clientHeight
+    );
 
     document.documentElement.style.setProperty(
       '--app-height',
-      `${altezza}px`
+      `${Math.round(altezza)}px`
     );
   }
 
   aggiornaAltezzaPagina();
 
-  window.addEventListener('load', aggiornaAltezzaPagina);
+  requestAnimationFrame(aggiornaAltezzaPagina);
+
+  setTimeout(aggiornaAltezzaPagina, 50);
+  setTimeout(aggiornaAltezzaPagina, 150);
+  setTimeout(aggiornaAltezzaPagina, 300);
+  setTimeout(aggiornaAltezzaPagina, 600);
+  setTimeout(aggiornaAltezzaPagina, 1000);
+  setTimeout(aggiornaAltezzaPagina, 1500);
+
+  window.addEventListener(
+    'load',
+    aggiornaAltezzaPagina
+  );
+
+  window.addEventListener(
+    'pageshow',
+    aggiornaAltezzaPagina
+  );
+
+  window.addEventListener(
+    'resize',
+    aggiornaAltezzaPagina
+  );
 
   if (window.visualViewport) {
+
     window.visualViewport.addEventListener(
       'resize',
+      aggiornaAltezzaPagina
+    );
+
+    window.visualViewport.addEventListener(
+      'scroll',
       aggiornaAltezzaPagina
     );
   }
 
   window.addEventListener(
     'orientationchange',
-    aggiornaAltezzaPagina
+    () => {
+      setTimeout(aggiornaAltezzaPagina, 300);
+    }
   );
 </script>
 
