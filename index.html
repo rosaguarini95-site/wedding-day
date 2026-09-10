@@ -8,23 +8,6 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<script>
-  (function () {
-    const ua = navigator.userAgent || "";
-
-    const isIOS =
-      /iPhone|iPad|iPod/i.test(ua);
-
-    const isWhatsApp =
-      /WhatsApp/i.test(ua) ||
-      /whatsapp/i.test(document.referrer);
-    
-    if (isIOS && isWhatsApp) {
-      document.documentElement.classList.add("whatsapp-ios");
-    }
-  })();
-</script>
-
 <body>
 
   <main class="page">
