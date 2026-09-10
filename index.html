@@ -52,24 +52,192 @@
 
     </section>
   </main>
-
   <script>
-  function sistemaViewportWhatsApp() {
-    document.documentElement.classList.add("viewport-fixed");
-  }
-
-  window.addEventListener(
-    "touchstart",
-    sistemaViewportWhatsApp,
-    { once: true, passive: true }
-  );
-
-  window.addEventListener(
-    "pointerdown",
-    sistemaViewportWhatsApp,
-    { once: true }
-  );
-</script>
+  (function () {
+  
+    const isIOS =
+      /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+      (
+        navigator.platform === "MacIntel" &&
+        navigator.maxTouchPoints > 1
+      );
+  
+    /*
+      Su Android e PC non facciamo assolutamente nulla.
+    */
+    if (!isIOS) {
+      return;
+    }
+  
+    const root = document.documentElement;
+  
+    /*
+      Impedisce a WebKit di ripristinare per un attimo
+      una vecchia posizione verticale durante l'apertura.
+    */
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+  
+    function correggiViewport() {
+  
+      /*
+        Prima obblighiamo il documento ad essere realmente
+        all'inizio della pagina.
+      */
+      const scroller =
+        document.scrollingElement ||
+        document.documentElement;
+  
+      scroller.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+  
+      window.scrollTo(0, 0);
+  
+      /*
+        Aspettiamo il frame successivo perché WebKit
+        spesso aggiorna la geometria in ritardo.
+      */
+      requestAnimationFrame(function () {
+  
+        const vv = window.visualViewport;
+  
+        const scrollY =
+          window.scrollY ||
+          window.pageYOffset ||
+          0;
+  
+        const bodyTop =
+          document.body.getBoundingClientRect().top;
+  
+        let viewportOffset = 0;
+  
+        if (vv) {
+  
+          const offsetTop =
+            vv.offsetTop || 0;
+  
+          const pageTop =
+            (vv.pageTop || 0) - scrollY;
+  
+          viewportOffset = Math.max(
+            0,
+            offsetTop,
+            pageTop
+          );
+        }
+  
+        /*
+          Se WebKit ha "pannato" visivamente il body
+          verso l'alto, bodyTop sarà negativo.
+        */
+        const bodyPan =
+          Math.max(0, -bodyTop);
+  
+        /*
+          Usiamo il valore reale più grande rilevato.
+        */
+        const correzione =
+          Math.max(
+            viewportOffset,
+            bodyPan
+          );
+  
+        root.style.setProperty(
+          "--ios-viewport-fix",
+          Math.round(correzione) + "px"
+        );
+      });
+    }
+  
+  
+    /*
+      Primo tentativo immediato.
+    */
+    correggiViewport();
+  
+  
+    /*
+      WebKit può sistemare gli inset in momenti diversi
+      durante il primo caricamento.
+    */
+    document.addEventListener(
+      "DOMContentLoaded",
+      correggiViewport
+    );
+  
+    window.addEventListener(
+      "load",
+      correggiViewport
+    );
+  
+    window.addEventListener(
+      "pageshow",
+      correggiViewport
+    );
+  
+  
+    /*
+      Ripetiamo il controllo durante il primo secondo
+      e mezzo, senza che l'utente debba toccare niente.
+    */
+    setTimeout(correggiViewport, 50);
+    setTimeout(correggiViewport, 150);
+    setTimeout(correggiViewport, 300);
+    setTimeout(correggiViewport, 500);
+    setTimeout(correggiViewport, 800);
+    setTimeout(correggiViewport, 1200);
+    setTimeout(correggiViewport, 1600);
+  
+  
+    /*
+      Se la WebView comunica finalmente un resize/scroll
+      del visual viewport, aggiorniamo subito.
+    */
+    if (window.visualViewport) {
+  
+      window.visualViewport.addEventListener(
+        "resize",
+        correggiViewport
+      );
+  
+      window.visualViewport.addEventListener(
+        "scroll",
+        correggiViewport
+      );
+    }
+  
+  
+    /*
+      Al primo tocco facciamo un ultimo controllo PRIMA
+      che parta l'apertura delle ante.
+    */
+    window.addEventListener(
+      "touchstart",
+      correggiViewport,
+      {
+        once: true,
+        passive: true,
+        capture: true
+      }
+    );
+  
+  
+    /*
+      Dopo l'assestamento torniamo al comportamento
+      normale della cronologia.
+    */
+    setTimeout(function () {
+  
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "auto";
+      }
+  
+    }, 2000);
+  
+  })();
+  </script>
   
 </body>
 </html>
