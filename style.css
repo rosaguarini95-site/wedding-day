@@ -1,11 +1,13 @@
 /* =========================
    BASE
    ========================= */
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
+
 
 html,
 body {
@@ -13,324 +15,912 @@ body {
   min-height: 100%;
 }
 
+
 html {
   background: #eee6dc;
 }
 
+
 body {
   min-height: 100vh;
   min-height: 100dvh;
+
   overflow-x: hidden;
-  font-family: Georgia, "Times New Roman", serif;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
   background:
-    radial-gradient(circle at top, #ffffff 0%, #f8f4ee 48%, #eee6dc 100%);
+    radial-gradient(
+      circle at top,
+      #ffffff 0%,
+      #f8f4ee 48%,
+      #eee6dc 100%
+    );
+
   color: #2d2925;
-  -webkit-tap-highlight-color: transparent;
+
+  -webkit-tap-highlight-color:
+    transparent;
 }
+
 
 html,
 body {
   overscroll-behavior-y: none;
 }
 
+
 img {
   display: block;
   max-width: 100%;
 }
 
+
+
+/* =========================
+   CARICAMENTO INIZIALE
+   ========================= */
+
+.site-loader {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: grid;
+
+  place-items: center;
+
+  background:
+    radial-gradient(
+      circle at center,
+      #ffffff 0%,
+      #f8f4ee 60%,
+      #eee6dc 100%
+    );
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.45s ease,
+    visibility 0.45s ease;
+}
+
+
+.loader-content {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 11px;
+}
+
+
+.loader-monogram {
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 2.2rem;
+
+  font-style: italic;
+
+  letter-spacing: 0.08em;
+
+  color: #72543d;
+}
+
+
+.loader-line {
+  width: 48px;
+
+  height: 1px;
+
+  background:
+    rgba(
+      95,
+      72,
+      50,
+      0.48
+    );
+
+  transform-origin: center;
+
+  animation:
+    loaderPulse
+    1.2s
+    ease-in-out
+    infinite;
+}
+
+
+.loader-text {
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 0.85rem;
+
+  font-style: italic;
+
+  letter-spacing: 0.08em;
+
+  color: #4b4037;
+}
+
+
+@keyframes loaderPulse {
+
+  0%,
+  100% {
+    transform: scaleX(0.35);
+    opacity: 0.35;
+  }
+
+  50% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+
+}
+
+
+/*
+  Durante il caricamento
+  mostriamo solamente il loader.
+*/
+
+html.is-loading .site-loader {
+  opacity: 1;
+
+  visibility: visible;
+
+  pointer-events: auto;
+}
+
+
+html.is-loading .page {
+  opacity: 0;
+
+  visibility: hidden;
+}
+
+
+/*
+  Quando le immagini sono pronte,
+  il contenuto appare con una breve
+  dissolvenza.
+*/
+
+.page {
+  opacity: 1;
+
+  visibility: visible;
+
+  transition:
+    opacity 0.45s ease;
+}
+
+
+
+/* =========================
+   PAGINA
+   ========================= */
+
 .page {
   min-height: 100vh;
   min-height: 100dvh;
+
   display: grid;
+
   place-items: center;
+
   padding:
-    max(14px, env(safe-area-inset-top))
-    max(14px, env(safe-area-inset-right))
-    max(14px, env(safe-area-inset-bottom))
-    max(14px, env(safe-area-inset-left));
+    max(
+      14px,
+      env(safe-area-inset-top)
+    )
+    max(
+      14px,
+      env(safe-area-inset-right)
+    )
+    max(
+      14px,
+      env(safe-area-inset-bottom)
+    )
+    max(
+      14px,
+      env(safe-area-inset-left)
+    );
 }
+
 
 
 /* =========================
    CONTENITORE RESPONSIVE
-   Le immagini originali sono circa 419 x 588
    ========================= */
+
 .wedding-card {
-  width: min(92vw, 470px);
+  width:
+    min(
+      92vw,
+      470px
+    );
 }
+
+
+
+/* =========================
+   SCENA
+   ========================= */
 
 .scene {
   position: relative;
+
   width: 100%;
+
   aspect-ratio: 419 / 588;
+
   perspective: 1800px;
+
   isolation: isolate;
+
   border-radius: 2px;
 }
+
 
 
 /* =========================
    INVITO INTERNO
    ========================= */
+
 .inside {
   position: absolute;
+
   inset: 0;
+
   z-index: 1;
+
   overflow: hidden;
-  background: #fff;
+
+  background: #ffffff;
+
   box-shadow:
-    0 20px 50px rgba(70, 49, 30, 0.18),
-    0 4px 14px rgba(70, 49, 30, 0.10);
+    0 20px 50px
+      rgba(
+        70,
+        49,
+        30,
+        0.18
+      ),
+
+    0 4px 14px
+      rgba(
+        70,
+        49,
+        30,
+        0.10
+      );
 }
+
 
 .inside img {
   width: 100%;
+
   height: 100%;
+
   object-fit: contain;
-  background: white;
+
+  background: #ffffff;
+
   user-select: none;
+
+  -webkit-user-drag: none;
 }
+
 
 
 /* =========================
-   ANTE / COPERTINA
+   CHECKBOX INVISIBILE
    ========================= */
+
 .open-toggle {
   position: absolute;
+
   width: 1px;
+
   height: 1px;
+
   opacity: 0;
+
   pointer-events: none;
 }
 
+
+
+/* =========================
+   ANTE
+   ========================= */
+
 .door {
   position: absolute;
+
   top: 0;
+
   bottom: 0;
+
   width: 50%;
+
   z-index: 4;
+
   cursor: pointer;
+
   overflow: hidden;
+
   backface-visibility: hidden;
-  transform-style: preserve-3d;
+
+  transform-style:
+    preserve-3d;
 
   transition:
-    transform 1.35s cubic-bezier(.2, .72, .18, 1),
-    filter 1.2s ease,
-    box-shadow 1.2s ease;
+    transform
+      1.35s
+      cubic-bezier(
+        .2,
+        .72,
+        .18,
+        1
+      ),
+
+    filter
+      1.2s
+      ease,
+
+    box-shadow
+      1.2s
+      ease;
 }
+
+
+
+/* =========================
+   ANTA SINISTRA
+   ========================= */
 
 .door-left {
   left: 0;
-  transform-origin: left center;
+
+  transform-origin:
+    left center;
 }
+
+
+
+/* =========================
+   ANTA DESTRA
+   ========================= */
 
 .door-right {
   right: 0;
-  transform-origin: right center;
+
+  transform-origin:
+    right center;
 }
+
+
+
+/* =========================
+   IMMAGINE CHIESA
+   ========================= */
 
 .door-image {
   position: absolute;
-  inset: 0;
-  background-image: url("assets/chiesa.png?v=13");
-  background-repeat: no-repeat;
 
-  /* Ogni anta mostra esattamente metà dell'immagine */
-  background-size: 200% 100%;
+  inset: 0;
+
+  background-image:
+    url(
+      "assets/chiesa.png?v=13"
+    );
+
+  background-repeat:
+    no-repeat;
+
+  /*
+    Ogni anta occupa metà larghezza,
+    quindi l'immagine deve essere
+    grande il doppio.
+  */
+  background-size:
+    200% 100%;
 }
+
 
 .door-left .door-image {
-  background-position: left center;
+  background-position:
+    left center;
 }
+
 
 .door-right .door-image {
-  background-position: right center;
+  background-position:
+    right center;
 }
 
 
-/* Piccola linea centrale, come due ante */
+
+/* =========================
+   LINEA CENTRALE
+   ========================= */
+
 .door-left::after,
 .door-right::after {
   content: "";
+
   position: absolute;
+
   top: 0;
+
   bottom: 0;
+
   width: 1px;
-  background: rgba(95, 72, 50, 0.20);
+
+  background:
+    rgba(
+      95,
+      72,
+      50,
+      0.20
+    );
 }
+
 
 .door-left::after {
   right: 0;
 }
 
+
 .door-right::after {
   left: 0;
 }
 
 
+
 /* =========================
    APERTURA
    ========================= */
-.open-toggle:checked ~ .scene .door-left {
-  transform: rotateY(-112deg);
-  filter: brightness(.93);
-  box-shadow: 12px 0 25px rgba(53, 36, 22, 0.18);
+
+.open-toggle:checked
+~ .scene
+.door-left {
+
+  transform:
+    rotateY(-112deg);
+
+  filter:
+    brightness(.93);
+
+  box-shadow:
+    12px
+    0
+    25px
+    rgba(
+      53,
+      36,
+      22,
+      0.18
+    );
 }
 
-.open-toggle:checked ~ .scene .door-right {
-  transform: rotateY(112deg);
-  filter: brightness(.93);
-  box-shadow: -12px 0 25px rgba(53, 36, 22, 0.18);
+
+.open-toggle:checked
+~ .scene
+.door-right {
+
+  transform:
+    rotateY(112deg);
+
+  filter:
+    brightness(.93);
+
+  box-shadow:
+    -12px
+    0
+    25px
+    rgba(
+      53,
+      36,
+      22,
+      0.18
+    );
 }
+
 
 
 /* =========================
-   TESTI DI INTERAZIONE
+   "TOCCA PER APRIRE"
    ========================= */
+
 .open-hint {
   position: absolute;
+
   left: 50%;
+
   bottom: 4.5%;
+
   z-index: 8;
-  transform: translateX(-50%);
+
+  transform:
+    translateX(-50%);
+
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
+
   gap: 2px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .78);
-  border: 1px solid rgba(128, 100, 73, .20);
-  box-shadow: 0 5px 18px rgba(69, 47, 29, .10);
-  backdrop-filter: blur(7px);
+
+  padding:
+    8px 14px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.78
+    );
+
+  border:
+    1px solid
+    rgba(
+      128,
+      100,
+      73,
+      0.20
+    );
+
+  box-shadow:
+    0
+    5px
+    18px
+    rgba(
+      69,
+      47,
+      29,
+      0.10
+    );
+
+  backdrop-filter:
+    blur(7px);
+
+  -webkit-backdrop-filter:
+    blur(7px);
+
   cursor: pointer;
-  transition: opacity .35s ease, transform .35s ease;
+
+  transition:
+    opacity
+      0.35s
+      ease,
+
+    transform
+      0.35s
+      ease;
 }
+
 
 .open-hint__text {
-  font-size: clamp(.72rem, 2.7vw, .88rem);
-  letter-spacing: .04em;
-  white-space: nowrap;
+  font-size:
+    clamp(
+      .72rem,
+      2.7vw,
+      .88rem
+    );
+
+  letter-spacing:
+    .04em;
+
+  white-space:
+    nowrap;
 }
 
+
 .open-hint__arrow {
-  font-size: 1.15rem;
-  line-height: .65;
-  animation: bounce 1.6s ease-in-out infinite;
+  font-size:
+    1.15rem;
+
+  line-height:
+    .65;
+
+  animation:
+    bounce
+    1.6s
+    ease-in-out
+    infinite;
 }
+
+
+
+/* =========================
+   PULSANTE CHIUDI
+   ========================= */
 
 .close-hint {
   position: absolute;
+
   top: 12px;
+
   right: 12px;
+
   z-index: 9;
+
   opacity: 0;
+
   pointer-events: none;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.90);
-  border: 1px solid rgba(128, 100, 73, .20);
-  box-shadow: 0 4px 14px rgba(69,47,29,.10);
-  font-size: .78rem;
+
+  padding:
+    8px 12px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      .90
+    );
+
+  border:
+    1px solid
+    rgba(
+      128,
+      100,
+      73,
+      .20
+    );
+
+  box-shadow:
+    0
+    4px
+    14px
+    rgba(
+      69,
+      47,
+      29,
+      .10
+    );
+
+  font-size:
+    .78rem;
+
   cursor: pointer;
-  transition: opacity .35s ease;
+
+  transition:
+    opacity
+      .35s
+      ease;
 }
 
-.open-toggle:checked ~ .scene .open-hint {
+
+
+/* =========================
+   STATO APERTO
+   ========================= */
+
+.open-toggle:checked
+~ .scene
+.open-hint {
+
   opacity: 0;
+
   pointer-events: none;
-  transform: translateX(-50%) translateY(8px);
+
+  transform:
+    translateX(-50%)
+    translateY(8px);
 }
 
-.open-toggle:checked ~ .scene .close-hint {
+
+.open-toggle:checked
+~ .scene
+.close-hint {
+
   opacity: 1;
+
   pointer-events: auto;
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(4px); }
-}
 
 
 /* =========================
-   SMARTPHONE PICCOLI
+   FRECCIA
    ========================= */
-@media (max-width: 480px) { 
-.page { 
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform:
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      translateY(4px);
+  }
+
+}
+
+
+
+/* =========================
+   SMARTPHONE
+   ========================= */
+
+@media (max-width: 480px) {
+
+  .page {
     min-height: 100svh;
- 
+
     display: flex;
-    flex-direction: column; 
-    align-items: center; 
+
+    flex-direction: column;
+
+    align-items: center;
+
     justify-content: flex-start;
 
-    padding-top: clamp(52px, 16vw, 72px); 
-    padding-left: 8px; 
-    padding-right: 8px; 
-    padding-bottom: 24px;
-  } 
- 
-  .wedding-card { 
-    width: min(96vw, 470px); 
-  } 
- 
-  .scene { 
-    box-shadow: none; 
-  } 
- 
-  .open-hint { 
-    bottom: 3.2%; 
-    padding: 7px 12px; 
-  } 
- 
-  .close-hint { 
-    top: 8px; 
-    right: 8px; 
-  } 
+    padding-top:
+      clamp(
+        52px,
+        16vw,
+        72px
+      );
+
+    padding-left:
+      8px;
+
+    padding-right:
+      8px;
+
+    padding-bottom:
+      24px;
+  }
+
+
+  .wedding-card {
+    width:
+      min(
+        96vw,
+        470px
+      );
+  }
+
+
+  .scene {
+    box-shadow: none;
+  }
+
+
+  .open-hint {
+    bottom: 3.2%;
+
+    padding:
+      7px 12px;
+  }
+
+
+  .close-hint {
+    top: 8px;
+
+    right: 8px;
+  }
+
 }
+
 
 
 /* =========================
-   TELEFONI IN ORIZZONTALE
+   TELEFONO ORIZZONTALE
    ========================= */
-@media (max-height: 520px) and (orientation: landscape) {
-.wedding-card {
-  width: min(86vw, 420px);
-}
+
+@media
+(max-height: 520px)
+and
+(orientation: landscape) {
+
+  .wedding-card {
+    width:
+      min(
+        86vw,
+        420px
+      );
+  }
+
 
   .page {
     padding: 8px;
   }
+
 }
+
 
 
 /* =========================
-   DESKTOP / SCHERMI GRANDI
+   DESKTOP
    ========================= */
+
 @media (min-width: 900px) {
+
   .wedding-card {
-    width: min(78vw, 560px);
+    width:
+      min(
+        78vw,
+        560px
+      );
   }
 
+
   .scene {
-    box-shadow: 0 28px 70px rgba(70, 49, 30, 0.10);
+    box-shadow:
+      0
+      28px
+      70px
+      rgba(
+        70,
+        49,
+        30,
+        0.10
+      );
   }
+
 }
+
 
 
 /* =========================
    ACCESSIBILITÀ
    ========================= */
-@media (prefers-reduced-motion: reduce) {
+
+@media
+(prefers-reduced-motion: reduce) {
+
   .door,
   .open-hint,
-  .close-hint {
-    transition-duration: .01ms;
+  .close-hint,
+  .site-loader,
+  .page {
+
+    transition-duration:
+      .01ms;
   }
 
-  .open-hint__arrow {
+
+  .open-hint__arrow,
+  .loader-line {
+
     animation: none;
   }
+
 }
