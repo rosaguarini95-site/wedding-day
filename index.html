@@ -7,6 +7,27 @@
   <title>Salvatore e Rosa</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
+<script>
+  (function () {
+    const ua = navigator.userAgent || "";
+
+    const isIOS =
+      /iPhone|iPad|iPod/i.test(ua);
+
+    const isWhatsApp =
+      /WhatsApp/i.test(ua) ||
+      /whatsapp/i.test(document.referrer);
+
+    const forzaWhatsApp =
+      new URLSearchParams(window.location.search).has("wa");
+
+    if (isIOS && (isWhatsApp || forzaWhatsApp)) {
+      document.documentElement.classList.add("whatsapp-ios");
+    }
+  })();
+</script>
+
 <body>
 
   <main class="page">
@@ -52,5 +73,23 @@
     </section>
   </main>
 
+  <script>
+  function sistemaViewportWhatsApp() {
+    document.documentElement.classList.add("viewport-fixed");
+  }
+
+  window.addEventListener(
+    "touchstart",
+    sistemaViewportWhatsApp,
+    { once: true, passive: true }
+  );
+
+  window.addEventListener(
+    "pointerdown",
+    sistemaViewportWhatsApp,
+    { once: true }
+  );
+</script>
+  
 </body>
 </html>
