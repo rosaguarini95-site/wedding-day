@@ -91,9 +91,14 @@ img {
 
   transition:
     opacity 0.45s ease,
-    visibility 0.45s ease;
+    visibility 0s linear 0.45s;
 }
 
+
+
+/* =========================
+   CONTENUTO LOADER
+   ========================= */
 
 .loader-content {
   display: flex;
@@ -107,6 +112,11 @@ img {
   gap: 11px;
 }
 
+
+
+/* =========================
+   MONOGRAMMA SR
+   ========================= */
 
 .loader-monogram {
   font-family:
@@ -123,6 +133,11 @@ img {
   color: #72543d;
 }
 
+
+
+/* =========================
+   LINEA ANIMATA
+   ========================= */
 
 .loader-line {
   width: 48px;
@@ -147,6 +162,11 @@ img {
 }
 
 
+
+/* =========================
+   TESTO LOADER
+   ========================= */
+
 .loader-text {
   font-family:
     Georgia,
@@ -163,6 +183,11 @@ img {
 }
 
 
+
+/* =========================
+   ANIMAZIONE LOADER
+   ========================= */
+
 @keyframes loaderPulse {
 
   0%,
@@ -170,6 +195,7 @@ img {
     transform: scaleX(0.35);
     opacity: 0.35;
   }
+
 
   50% {
     transform: scaleX(1);
@@ -179,10 +205,16 @@ img {
 }
 
 
-/*
-  Durante il caricamento
-  mostriamo solamente il loader.
-*/
+
+/* =========================
+   STATO DI CARICAMENTO
+   ========================= */
+
+html.is-loading,
+html.is-loading body {
+  overflow: hidden;
+}
+
 
 html.is-loading .site-loader {
   opacity: 1;
@@ -190,6 +222,10 @@ html.is-loading .site-loader {
   visibility: visible;
 
   pointer-events: auto;
+
+  transition:
+    opacity 0.45s ease,
+    visibility 0s linear 0s;
 }
 
 
@@ -197,22 +233,8 @@ html.is-loading .page {
   opacity: 0;
 
   visibility: hidden;
-}
 
-
-/*
-  Quando le immagini sono pronte,
-  il contenuto appare con una breve
-  dissolvenza.
-*/
-
-.page {
-  opacity: 1;
-
-  visibility: visible;
-
-  transition:
-    opacity 0.45s ease;
+  pointer-events: none;
 }
 
 
@@ -228,6 +250,13 @@ html.is-loading .page {
   display: grid;
 
   place-items: center;
+
+  opacity: 1;
+
+  visibility: visible;
+
+  transition:
+    opacity 0.45s ease;
 
   padding:
     max(
@@ -441,9 +470,10 @@ html.is-loading .page {
     no-repeat;
 
   /*
-    Ogni anta occupa metà larghezza,
-    quindi l'immagine deve essere
-    grande il doppio.
+    Ogni anta occupa metà larghezza.
+
+    L'immagine completa viene quindi
+    dimensionata al 200%.
   */
   background-size:
     200% 100%;
@@ -501,7 +531,7 @@ html.is-loading .page {
 
 
 /* =========================
-   APERTURA
+   APERTURA ANTA SINISTRA
    ========================= */
 
 .open-toggle:checked
@@ -526,6 +556,11 @@ html.is-loading .page {
     );
 }
 
+
+
+/* =========================
+   APERTURA ANTA DESTRA
+   ========================= */
 
 .open-toggle:checked
 ~ .scene
@@ -552,7 +587,7 @@ html.is-loading .page {
 
 
 /* =========================
-   "TOCCA PER APRIRE"
+   TOCCA PER APRIRE
    ========================= */
 
 .open-hint {
@@ -628,6 +663,11 @@ html.is-loading .page {
 }
 
 
+
+/* =========================
+   TESTO "TOCCA PER APRIRE"
+   ========================= */
+
 .open-hint__text {
   font-size:
     clamp(
@@ -643,6 +683,11 @@ html.is-loading .page {
     nowrap;
 }
 
+
+
+/* =========================
+   FRECCIA
+   ========================= */
 
 .open-hint__arrow {
   font-size:
@@ -725,7 +770,8 @@ html.is-loading .page {
 
 
 /* =========================
-   STATO APERTO
+   NASCONDI "TOCCA PER APRIRE"
+   QUANDO IL BIGLIETTO È APERTO
    ========================= */
 
 .open-toggle:checked
@@ -742,6 +788,11 @@ html.is-loading .page {
 }
 
 
+
+/* =========================
+   MOSTRA "CHIUDI"
+   ========================= */
+
 .open-toggle:checked
 ~ .scene
 .close-hint {
@@ -754,7 +805,7 @@ html.is-loading .page {
 
 
 /* =========================
-   FRECCIA
+   ANIMAZIONE FRECCIA
    ========================= */
 
 @keyframes bounce {
@@ -764,6 +815,7 @@ html.is-loading .page {
     transform:
       translateY(0);
   }
+
 
   50% {
     transform:
@@ -780,6 +832,7 @@ html.is-loading .page {
 
 @media (max-width: 480px) {
 
+
   .page {
     min-height: 100svh;
 
@@ -791,6 +844,7 @@ html.is-loading .page {
 
     justify-content: flex-start;
 
+
     padding-top:
       clamp(
         52px,
@@ -798,15 +852,19 @@ html.is-loading .page {
         72px
       );
 
+
     padding-left:
       8px;
+
 
     padding-right:
       8px;
 
+
     padding-bottom:
       24px;
   }
+
 
 
   .wedding-card {
@@ -818,9 +876,11 @@ html.is-loading .page {
   }
 
 
+
   .scene {
     box-shadow: none;
   }
+
 
 
   .open-hint {
@@ -831,11 +891,13 @@ html.is-loading .page {
   }
 
 
+
   .close-hint {
     top: 8px;
 
     right: 8px;
   }
+
 
 }
 
@@ -850,6 +912,7 @@ html.is-loading .page {
 and
 (orientation: landscape) {
 
+
   .wedding-card {
     width:
       min(
@@ -863,6 +926,7 @@ and
     padding: 8px;
   }
 
+
 }
 
 
@@ -872,6 +936,7 @@ and
    ========================= */
 
 @media (min-width: 900px) {
+
 
   .wedding-card {
     width:
@@ -895,6 +960,7 @@ and
       );
   }
 
+
 }
 
 
@@ -905,6 +971,7 @@ and
 
 @media
 (prefers-reduced-motion: reduce) {
+
 
   .door,
   .open-hint,
@@ -922,5 +989,6 @@ and
 
     animation: none;
   }
+
 
 }
