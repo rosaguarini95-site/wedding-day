@@ -270,16 +270,6 @@ img {
     padding-left: 8px; 
     padding-right: 8px; 
     padding-bottom: 24px;
-
-    /*
-      Compensazione dell'eventuale spostamento
-      imposto dalla WebView di iOS.
-    */
-    transform: translate3d(
-      0,
-      var(--ios-viewport-fix, 0px),
-      0
-    );
   } 
  
   .wedding-card { 
