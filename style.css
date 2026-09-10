@@ -262,13 +262,9 @@ img {
     padding: 8px;
   }
 
-  .wedding-card {
-    /*
-      Riempie quasi tutto lo schermo senza tagliare
-      né in altezza né in larghezza.
-    */
-    width: min(96vw, calc(96svh * 419 / 588));
-  }
+.wedding-card {
+  width: min(96vw, calc((100dvh - 16px) * 419 / 588));
+}
 
   .scene {
     box-shadow: none;
