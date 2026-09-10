@@ -59,17 +59,6 @@ img {
   width: min(92vw, 470px);
 }
 
-/* Correzione iniziale per browser interno WhatsApp su iPhone */
-html.whatsapp-ios .wedding-card {
-  transform: translateY(40px);
-  transition: transform 0.15s ease;
-}
-
-/* Dopo la prima interazione torniamo alla posizione normale */
-html.whatsapp-ios.viewport-fixed .wedding-card {
-  transform: translateY(0);
-}
-
 .scene {
   position: relative;
   width: 100%;
@@ -268,43 +257,48 @@ html.whatsapp-ios.viewport-fixed .wedding-card {
 /* =========================
    SMARTPHONE PICCOLI
    ========================= */
-@media (max-width: 480px) {
-  .page {
-    min-height: 100vh;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+@media (max-width: 480px) { 
+  .page { 
+    min-height: 100vh; 
+ 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
     justify-content: flex-start;
 
-    /*
-      Non dipende dall'altezza del browser.
-      Quindi WhatsApp non può spostare la chiesa
-      quando corregge il viewport.
-    */
-    padding-top: clamp(52px, 16vw, 72px);
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-top: clamp(52px, 16vw, 72px); 
+    padding-left: 8px; 
+    padding-right: 8px; 
     padding-bottom: 24px;
-  }
 
-  .wedding-card {
-    width: min(96vw, 470px);
-  }
-
-  .scene {
-    box-shadow: none;
-  }
-
-  .open-hint {
-    bottom: 3.2%;
-    padding: 7px 12px;
-  }
-
-  .close-hint {
-    top: 8px;
-    right: 8px;
-  }
+    /*
+      Compensazione dell'eventuale spostamento
+      imposto dalla WebView di iOS.
+    */
+    transform: translate3d(
+      0,
+      var(--ios-viewport-fix, 0px),
+      0
+    );
+  } 
+ 
+  .wedding-card { 
+    width: min(96vw, 470px); 
+  } 
+ 
+  .scene { 
+    box-shadow: none; 
+  } 
+ 
+  .open-hint { 
+    bottom: 3.2%; 
+    padding: 7px 12px; 
+  } 
+ 
+  .close-hint { 
+    top: 8px; 
+    right: 8px; 
+  } 
 }
 
 
