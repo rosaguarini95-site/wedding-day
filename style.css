@@ -302,10 +302,7 @@ img {
    ========================= */
 @media (max-height: 520px) and (orientation: landscape) {
 .wedding-card {
-  width: min(
-    86vw,
-    calc((var(--app-height, 100dvh) - 16px) * 419 / 588)
-  );
+  width: min(86vw, 420px);
 }
 
   .page {
