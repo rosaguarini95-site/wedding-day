@@ -39,8 +39,7 @@ img {
 }
 
 .page {
-  min-height: 100vh;
-  min-height: 100dvh;
+  min-height: var(--app-height, 100dvh);
   display: grid;
   place-items: center;
   padding:
@@ -263,7 +262,10 @@ img {
   }
 
 .wedding-card {
-  width: min(96vw, calc((100dvh - 16px) * 419 / 588));
+  width: min(
+    96vw,
+    calc((var(--app-height, 100dvh) - 16px) * 419 / 588)
+  );
 }
 
   .scene {
@@ -286,9 +288,12 @@ img {
    TELEFONI IN ORIZZONTALE
    ========================= */
 @media (max-height: 520px) and (orientation: landscape) {
-  .wedding-card {
-    width: min(86vw, calc(92svh * 419 / 588));
-  }
+.wedding-card {
+  width: min(
+    86vw,
+    calc((var(--app-height, 100dvh) - 16px) * 419 / 588)
+  );
+}
 
   .page {
     padding: 8px;
