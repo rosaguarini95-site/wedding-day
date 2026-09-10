@@ -259,15 +259,27 @@ img {
    ========================= */
 @media (max-width: 480px) {
   .page {
-    padding: 8px;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    /*
+      Non dipende dall'altezza del browser.
+      Quindi WhatsApp non può spostare la chiesa
+      quando corregge il viewport.
+    */
+    padding-top: clamp(52px, 16vw, 72px);
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-bottom: 24px;
   }
 
-.wedding-card {
-  width: min(
-    96vw,
-    calc((var(--app-height, 100dvh) - 16px) * 419 / 588)
-  );
-}
+  .wedding-card {
+    width: min(96vw, 470px);
+  }
 
   .scene {
     box-shadow: none;
