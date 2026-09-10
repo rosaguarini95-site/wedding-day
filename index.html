@@ -18,11 +18,8 @@
     const isWhatsApp =
       /WhatsApp/i.test(ua) ||
       /whatsapp/i.test(document.referrer);
-
-    const forzaWhatsApp =
-      new URLSearchParams(window.location.search).has("wa");
-
-    if (isIOS && (isWhatsApp || forzaWhatsApp)) {
+    
+    if (isIOS && isWhatsApp) {
       document.documentElement.classList.add("whatsapp-ios");
     }
   })();
