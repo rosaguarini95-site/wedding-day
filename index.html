@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f7f3ed" />
+  <title>Salvatore e Rosa</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <main class="page">
+    <section class="wedding-card" aria-label="Invito di matrimonio di Salvatore e Rosa">
+
+      <!-- Checkbox invisibile: permette l'apertura senza JavaScript -->
+      <input
+        class="open-toggle"
+        type="checkbox"
+        id="open-card"
+        aria-label="Apri o chiudi l'invito"
+      />
+
+      <div class="scene">
+        <!-- Invito interno -->
+        <div class="inside">
+          <img
+            src="assets/invito.png"
+            alt="Invito al matrimonio di Salvatore e Rosa"
+            draggable="false"
+          />
+        </div>
+
+        <!-- Due metà della facciata che si aprono come un biglietto -->
+        <label class="door door-left" for="open-card" aria-hidden="true">
+          <span class="door-image"></span>
+        </label>
+
+        <label class="door door-right" for="open-card" aria-hidden="true">
+          <span class="door-image"></span>
+        </label>
+
+        <!-- Indicazione iniziale -->
+        <label class="open-hint" for="open-card">
+          <span class="open-hint__text">Tocca per aprire</span>
+          <span class="open-hint__arrow" aria-hidden="true">⌄</span>
+        </label>
+
+        <!-- Pulsante per richiudere -->
+        <label class="close-hint" for="open-card">Chiudi</label>
+      </div>
+
+    </section>
+  </main>
+
+</body>
+</html>
