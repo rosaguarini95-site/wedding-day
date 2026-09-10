@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Precaricamento immagini principali -->
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <!-- Precaricamento delle due immagini principali -->
   <link
     rel="preload"
     as="image"
@@ -19,50 +24,78 @@
   />
 
   <!--
-    Al primo accesso effettuiamo un solo refresh automatico.
-    Il primo frame viene nascosto per evitare di mostrare
-    il layout non ancora assestato.
+    Impostiamo subito lo stato di caricamento.
+
+    NON facciamo più il refresh immediatamente.
+
+    Alla primissima apertura aspettiamo prima che
+    immagini e WebView siano pronte, poi facciamo
+    un solo refresh automatico.
   -->
   <script>
     (function () {
+
       document.documentElement.classList.add("is-loading");
 
-      const reloadKey = "wedding-first-reload-v4";
+      const reloadKey = "wedding-first-reload-v5";
+
+      let primoCaricamento = false;
 
       try {
-        if (!sessionStorage.getItem(reloadKey)) {
-          document.documentElement.style.visibility = "hidden";
 
-          sessionStorage.setItem(reloadKey, "1");
+        primoCaricamento =
+          !sessionStorage.getItem(reloadKey);
 
-          window.location.reload();
-        }
       } catch (error) {
+
         /*
           Se sessionStorage non fosse disponibile,
-          continuiamo normalmente senza bloccare il sito.
+          evitiamo qualsiasi rischio di loop.
         */
+        primoCaricamento = false;
+
       }
+
+      window.__weddingFirstLoad =
+        primoCaricamento;
+
+      window.__weddingReloadKey =
+        reloadKey;
+
     })();
   </script>
 
-  <meta name="theme-color" content="#f7f3ed" />
 
-  <title>Salvatore e Rosa</title>
+  <meta
+    name="theme-color"
+    content="#f7f3ed"
+  />
 
-  <link rel="stylesheet" href="style.css?v=13" />
+  <title>
+    Salvatore e Rosa
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="style.css?v=14"
+  />
+
 </head>
+
 
 <body>
 
+
   <!-- =========================
-       LOADER
+       LOADER INIZIALE
        ========================= -->
+
   <div
     class="site-loader"
     aria-label="Caricamento invito"
     aria-live="polite"
   >
+
     <div class="loader-content">
 
       <div class="loader-monogram">
@@ -76,12 +109,15 @@
       </div>
 
     </div>
+
   </div>
+
 
 
   <!-- =========================
        INVITO
        ========================= -->
+
   <main class="page">
 
     <section
@@ -89,8 +125,11 @@
       aria-label="Invito di matrimonio di Salvatore e Rosa"
     >
 
-      <!-- Checkbox invisibile:
-           permette apertura/chiusura senza JavaScript -->
+
+      <!--
+        Checkbox invisibile:
+        permette apertura e chiusura senza JavaScript
+      -->
       <input
         class="open-toggle"
         type="checkbox"
@@ -98,9 +137,14 @@
         aria-label="Apri o chiudi l'invito"
       />
 
+
       <div class="scene">
 
-        <!-- Invito interno -->
+
+        <!-- =========================
+             INVITO INTERNO
+             ========================= -->
+
         <div class="inside">
 
           <img
@@ -112,27 +156,43 @@
         </div>
 
 
-        <!-- Anta sinistra -->
+
+        <!-- =========================
+             ANTA SINISTRA
+             ========================= -->
+
         <label
           class="door door-left"
           for="open-card"
           aria-hidden="true"
         >
+
           <span class="door-image"></span>
+
         </label>
 
 
-        <!-- Anta destra -->
+
+        <!-- =========================
+             ANTA DESTRA
+             ========================= -->
+
         <label
           class="door door-right"
           for="open-card"
           aria-hidden="true"
         >
+
           <span class="door-image"></span>
+
         </label>
 
 
-        <!-- Indicazione iniziale -->
+
+        <!-- =========================
+             TOCCA PER APRIRE
+             ========================= -->
+
         <label
           class="open-hint"
           for="open-card"
@@ -152,13 +212,18 @@
         </label>
 
 
-        <!-- Pulsante chiusura -->
+
+        <!-- =========================
+             CHIUDI
+             ========================= -->
+
         <label
           class="close-hint"
           for="open-card"
         >
           Chiudi
         </label>
+
 
       </div>
 
@@ -167,22 +232,24 @@
   </main>
 
 
+
   <!-- =========================
-       CONTROLLO CARICAMENTO
+       GESTIONE CARICAMENTO
        ========================= -->
+
   <script>
     (function () {
 
-      const startTime = performance.now();
+      const startTime =
+        performance.now();
 
-      let sitoMostrato = false;
+      let operazioneCompletata =
+        false;
 
 
       /*
-        Carichiamo esplicitamente entrambe le immagini.
-
-        In questo modo il sito non viene mostrato finché
-        sia la chiesa sia l'invito non sono pronti.
+        Le immagini che devono essere sicuramente
+        pronte prima di mostrare il sito.
       */
       const immagini = [
         "assets/chiesa.png?v=13",
@@ -190,44 +257,63 @@
       ];
 
 
+
+      /*
+        Scarica e decodifica realmente
+        una singola immagine.
+      */
       function caricaImmagine(src) {
 
         return new Promise(function (resolve) {
 
-          const img = new Image();
+          const img =
+            new Image();
 
 
-          img.onload = async function () {
+          img.onload =
+            async function () {
 
-            /*
-              decode() aspetta che il browser abbia
-              effettivamente decodificato l'immagine,
-              non soltanto terminato il download.
-            */
-            try {
+              try {
 
-              if (img.decode) {
-                await img.decode();
+                /*
+                  Non aspettiamo soltanto il download.
+
+                  decode() aspetta che il browser
+                  abbia preparato realmente l'immagine
+                  per il rendering.
+                */
+                if (img.decode) {
+
+                  await img.decode();
+
+                }
+
+              } catch (error) {
+
+                /*
+                  Anche se decode dovesse fallire,
+                  l'immagine risulta comunque caricata.
+                */
+
               }
 
-            } catch (error) {
-              /*
-                Se decode() non è disponibile o fallisce,
-                l'immagine risulta comunque caricata.
-              */
-            }
 
-            resolve();
-          };
+              resolve();
+
+            };
 
 
           /*
-            Se una singola immagine dovesse avere problemi
-            non lasciamo il visitatore bloccato sul loader.
+            Non lasciamo mai l'utente bloccato
+            se dovesse esserci un problema
+            con una singola immagine.
           */
-          img.onerror = function () {
-            resolve();
-          };
+          img.onerror =
+            function () {
+
+              resolve();
+
+            };
 
 
           img.src = src;
@@ -237,77 +323,183 @@
       }
 
 
-      function mostraSito() {
 
-        if (sitoMostrato) {
+      /*
+        Questa funzione viene eseguita quando
+        le immagini sono pronte.
+      */
+      function completaCaricamento() {
+
+        if (operazioneCompletata) {
+
           return;
+
         }
 
-        sitoMostrato = true;
+
+        operazioneCompletata = true;
+
+
+
+        /* =========================================
+           PRIMISSIMA APERTURA
+           ========================================= */
+
+        if (window.__weddingFirstLoad) {
+
+
+          /*
+            Registriamo PRIMA che il refresh
+            è già stato richiesto.
+
+            In questo modo non può nascere
+            un loop di refresh.
+          */
+          try {
+
+            sessionStorage.setItem(
+              window.__weddingReloadKey,
+              "1"
+            );
+
+          } catch (error) {
+
+            /*
+              Anche se sessionStorage dovesse
+              fallire, continuiamo.
+            */
+
+          }
+
+
+          /*
+            Le immagini ormai sono state caricate.
+
+            Aspettiamo ancora 600ms.
+
+            Questo tempo serve soprattutto alla
+            WebView di WhatsApp per terminare
+            l'assestamento delle barre e
+            delle dimensioni del viewport.
+
+            Durante tutto questo periodo
+            l'utente vede soltanto il loader.
+          */
+          setTimeout(function () {
+
+            window.location.reload();
+
+          }, 600);
+
+
+          return;
+
+        }
+
+
+
+        /* =========================================
+           SECONDO CARICAMENTO
+           O APERTURE SUCCESSIVE
+           ========================================= */
 
 
         /*
-          Se tutto è già in cache il caricamento può durare
-          pochi millisecondi.
-
-          Manteniamo il loader almeno 350 ms per evitare
-          un brutto lampeggio.
+          Ci assicuriamo che il sito parta sempre
+          dalla parte superiore.
         */
+        window.scrollTo(
+          0,
+          0
+        );
+
+
         const tempoTrascorso =
           performance.now() - startTime;
 
+
+        /*
+          Se tutto è già in cache potrebbe
+          caricarsi quasi istantaneamente.
+
+          Manteniamo comunque il loader almeno
+          per circa 300ms per evitare flash.
+        */
         const attesa =
-          Math.max(0, 350 - tempoTrascorso);
+          Math.max(
+            0,
+            300 - tempoTrascorso
+          );
 
 
         setTimeout(function () {
 
-          /*
-            Ci assicuriamo di partire sempre
-            dall'inizio della pagina.
-          */
-          window.scrollTo(0, 0);
-
 
           /*
-            Aspettiamo un frame prima di mostrare
-            il contenuto.
+            Aspettiamo due frame consecutivi.
+
+            Il browser ha così il tempo di:
+            1. calcolare il layout;
+            2. posizionare correttamente la chiesa;
+            3. preparare le immagini;
+            4. mostrare poi il contenuto.
           */
           requestAnimationFrame(function () {
 
-            document.documentElement
-              .classList
-              .remove("is-loading");
+
+            requestAnimationFrame(function () {
+
+
+              document.documentElement
+                .classList
+                .remove("is-loading");
+
+
+            });
+
 
           });
+
 
         }, attesa);
 
       }
 
 
+
       /*
-        Aspettiamo entrambe le immagini.
+        Aspettiamo contemporaneamente
+        entrambe le immagini.
       */
       Promise
         .all(
           immagini.map(caricaImmagine)
         )
-        .then(mostraSito);
+        .then(
+          completaCaricamento
+        );
+
 
 
       /*
-        Sicurezza:
-        anche con una connessione molto problematica
-        il loader sparisce comunque dopo 6 secondi.
+        SICUREZZA
+
+        Se per qualche motivo una connessione
+        dovesse bloccarsi, non lasciamo
+        il visitatore sul loader per sempre.
+
+        Dopo 8 secondi procediamo comunque.
       */
       setTimeout(
-        mostraSito,
-        6000
+        completaCaricamento,
+        8000
       );
+
 
     })();
   </script>
 
+
 </body>
+
 </html>
