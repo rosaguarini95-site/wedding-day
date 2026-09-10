@@ -13,14 +13,24 @@ body {
   min-height: 100%;
 }
 
+html {
+  background: #eee6dc;
+}
+
 body {
-  min-height: 100svh;
+  min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
   font-family: Georgia, "Times New Roman", serif;
   background:
     radial-gradient(circle at top, #ffffff 0%, #f8f4ee 48%, #eee6dc 100%);
   color: #2d2925;
   -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  overscroll-behavior-y: none;
 }
 
 img {
