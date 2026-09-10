@@ -59,6 +59,17 @@ img {
   width: min(92vw, 470px);
 }
 
+/* Correzione iniziale per browser interno WhatsApp su iPhone */
+html.whatsapp-ios .wedding-card {
+  transform: translateY(40px);
+  transition: transform 0.15s ease;
+}
+
+/* Dopo la prima interazione torniamo alla posizione normale */
+html.whatsapp-ios.viewport-fixed .wedding-card {
+  transform: translateY(0);
+}
+
 .scene {
   position: relative;
   width: 100%;
