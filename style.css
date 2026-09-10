@@ -258,10 +258,10 @@ img {
    SMARTPHONE PICCOLI
    ========================= */
 @media (max-width: 480px) { 
-  .page { 
-    min-height: 100vh; 
+.page { 
+    min-height: 100svh;
  
-    display: flex; 
+    display: flex;
     flex-direction: column; 
     align-items: center; 
     justify-content: flex-start;
